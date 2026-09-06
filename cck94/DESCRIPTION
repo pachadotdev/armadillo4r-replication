@@ -1,0 +1,28 @@
+Package: cck94
+Type: Package
+Title: Replication of 'Optimal Fiscal Policy in a Business Cycle Model' by
+    Chari, Christiano, and Kehoe (1994)
+Description: Replication of Chari et al. (1994) using projections
+    (original method), time iteration, the Endogenous Grid Method (ECM)
+    by Maliar and Maliar (2013), and separate validation by using Ramsey Optimal
+    Taxation Using a Monte Carlo 1st-order Linear Quadratic (LQ) approximation
+    and a 2nd-order perturbation (Benigno and Woodford, 2005).
+Version: 0.1
+Authors@R: c(
+    person(
+        given = "Mauricio",
+        family = "Vargas Sepulveda",
+        role = c("aut", "cre"),
+        email = "m.vargas.sepulveda@gmail.com",
+        comment = c(ORCID = "0000-0003-1017-7574"))
+    )
+Suggests:
+    knitr,
+    rmarkdown
+Depends: R(>= 3.5.0)
+License: Apache License (>= 2)
+RoxygenNote: 7.3.3
+Encoding: UTF-8
+NeedsCompilation: yes
+LinkingTo: cpp4r, armadillo4r
+LazyData: true

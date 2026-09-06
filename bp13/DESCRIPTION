@@ -1,0 +1,32 @@
+Package: bp13
+Type: Package
+Title: Replication Code for 'The Role of Time-Varying Price Elasticities in Accounting for Volatility Changes in the
+    Crude Oil Market' (Baumeister and Peersman 2013)
+Description: Using armadillo4r to avoid issues with MATLAB installation.
+Version: 0.1
+Authors@R: c(
+    person(
+        given = "Mauricio",
+        family = "Vargas Sepulveda",
+        role = c("aut", "cre"),
+        email = "m.vargas.sepulveda@gmail.com",
+        comment = c(ORCID = "0000-0003-1017-7574"))
+    )
+Suggests: 
+    knitr,
+    rmarkdown
+Depends: R(>= 3.5.0)
+License: Apache License (>= 2)
+BugReports: https://github.com/pachadotdev/armadillo4r/issues
+URL: https://github.com/pachadotdev/armadillo4r
+RoxygenNote: 7.3.3
+Encoding: UTF-8
+NeedsCompilation: yes
+LinkingTo: cpp4r, armadillo4r
+LazyData: true
+Imports: 
+    dplyr,
+    ggh4x,
+    ggplot2,
+    purrr,
+    rlang

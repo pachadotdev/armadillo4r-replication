@@ -1,0 +1,111 @@
+---
+title: "Replicating 'The Role of Time-Varying Price Elasticities in Accounting for Volatility Changes in the Crude Oil Market' (Baumeister and Peersman, 2013)"
+author: "Mauricio Vargas Sepulveda"
+date: 2025-12-10
+format: 
+  beamer:
+    theme: metropolis
+    navigation: horizontal
+    fontsize: 12pt
+    include-in-header: dimensions.tex
+bibliography: references.bib
+---
+
+# Explanation
+
+## Motivation
+
+* @baumeister_role_2013 provides documented datasets and codes.
+* The effort here consisted in translating the MATLAB code to C++ (Armadillo) and R for a fully portable replication.
+* I used @vargassepulveda_armadillo4r_2025 for a straightforward open source rewrite of the MATLAB code.
+
+## Technique and Data
+
+* Time-varying parameter VAR (TVP-VAR-SV) to model the crude oil market because:
+* Suitable for the oil sector where new production in response to price incentives will be gradual and subject to capacity constraints.
+* Efforts toward other energy sources are also reflected in slow variation in the energy share over time.
+* Burns = 50,000; Draws = 5,000
+
+**Code and reorganized data**: \url{https://github.com/pachadotdev/armadillo4r-replication}
+
+# Replication of Fig 2. Time-varying median impact impulse responses
+
+```{=latex}
+\begin{columns}[T]
+  \begin{column}{0.2\textwidth}
+    {\scriptsize
+    \begin{itemize}
+      \item Dark blue lines:\\Median response
+      \item Shades of blue areas:\\68\% and 95\% posterior credible intervals resp.
+      \item Black lines:\\Range of admissible models
+    \end{itemize}
+    }
+  \end{column}
+
+  \begin{column}{0.8\textwidth}
+```
+
+```{r fig2, echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=5.2, out.width='\\linewidth'}
+library(ggplot2)
+dinp <- readRDS("results-burns50000-draws5000.rds")
+dinp$figure2
+```
+
+```{=latex}
+  \end{column}
+\end{columns}
+```
+
+# Rep. of Fig 3. Spectrum of price inflation and Fig 4. Short-run price elasticities
+
+```{=latex}
+\begin{columns}[T]
+  \begin{column}{0.2\textwidth}
+    {\scriptsize
+    For Fig 3 (top panel):
+    \begin{itemize}
+      \item Dark blue line:\\Median response
+      \item Shade of blue area:\\95\% posterior distribution.
+    \end{itemize}
+
+    \vskip0.5cm
+
+    For Fig 4 (bottom three panels):
+    \begin{itemize}
+      \item Dark blue line:\\Median response
+      \item Shade of blue areas: \\68\% and 95\% posterior credible intervals resp.
+      \item Black lines:\\Range of admissible models
+    \end{itemize}
+    }
+  \end{column}
+
+  \begin{column}{0.8\textwidth}
+```
+
+```{r fig3-4, echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=5.2, out.width='\\linewidth'}
+library(patchwork)
+# match styles
+g1 <- dinp$figure3 + theme(plot.title = element_text(face = "plain", size = 9))
+g2 <- dinp$figure4
+g1 / g2 + plot_layout(heights = c(1, 3))
+```
+
+```{=latex}
+  \end{column}
+\end{columns}
+```
+
+# Discussion
+
+* Replication effort: Medium but for a good reason (elegant model).
+* Results: Identical to the original paper.
+* The article and supplentary material allow to match the results, and therefore an extension of this would be to conduct a complete replication.
+* The testing model (B=5,000; D=500) took around 30 minutes to run to then correct and test again until matching the results.
+* The full model as in the article (B=50,000; D=500) took around 2 hours to run to then correct and test again until matching the results.
+* One major scalability drawback is the computational cost of Bayesian estimation with MCMC.
+
+# References
+
+## References
+
+\footnotesize

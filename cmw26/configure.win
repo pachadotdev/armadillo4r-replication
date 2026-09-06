@@ -1,0 +1,45 @@
+#!/bin/sh
+# Check for C++14 support on Windows
+# Armadillo requires C++14 minimum
+
+# Get compiler
+CXX="${R_HOME}/bin${R_ARCH_BIN}/R CMD config CXX"
+CXX=$($CXX 2>/dev/null || echo "g++")
+
+# Test C++14 support
+cat > testcxx14.cpp <<EOF
+#include <memory>
+int main() {
+  auto ptr = std::make_unique<int>(42);
+  return 0;
+}
+EOF
+
+CXX14_OK="no"
+for std in "-std=c++17" "-std=gnu++17" "-std=c++14" "-std=gnu++14"; do
+  if $CXX $std testcxx14.cpp -o testcxx14.exe >/dev/null 2>&1; then
+    CXX14_OK="yes"
+    break
+  fi
+done
+rm -f testcxx14.cpp testcxx14.exe
+
+if [ "$CXX14_OK" = "no" ]; then
+  echo ""
+  echo "---------------------------------------------------------------------"
+  echo "ERROR: C++14 compiler required but not found."
+  echo ""
+  echo "The Armadillo C++ library requires C++14 or later."
+  echo ""
+  echo "On Windows, this typically means you need:"
+  echo "  - R >= 4.2 with Rtools42 or later"
+  echo "  - Rtools40 (R 4.0-4.1) defaults to C++11"
+  echo ""
+  echo "Please upgrade to R 4.2+ for armadillo4r support."
+  echo "---------------------------------------------------------------------"
+  echo ""
+  exit 1
+fi
+
+echo "- C++14 support detected"
+exit 0

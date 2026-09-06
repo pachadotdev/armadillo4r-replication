@@ -1,0 +1,43 @@
+Package: cmw26
+Type: Package
+Title: Evaluating Monetary Policy Counterfactuals
+Version: 0.1
+Authors@R: c(
+    person(
+        given = "Tomas",
+        family = "Caravello",
+        role = c("aut")),
+    person(
+        given = "Alisdair",
+        family = "McKay",
+        role = c("aut")),
+    person(
+        given = "Christian",
+        family = "Wolf",
+        role = c("aut")),
+    person(
+        given = "Mauricio",
+        family = "Vargas",
+        role = c("cre"),
+        email = "mavargas11@uc.cl",
+        comment = c(ORCID = "0000-0003-1017-7574"))
+    )
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Depends: R(>= 3.5.0)
+Description: R port of the replication files for "Evaluating Monetary Policy 
+    Counterfactuals: (When) Do We Need Structural Models?" by Caravello, 
+    McKay and Wolf. Implements Bayesian VAR estimation, impulse response 
+    analysis, and frequency domain variance decomposition using Armadillo 
+    for efficient matrix computations.
+License: Apache License (>= 2)
+BugReports: https://github.com/pachadotdev/armadillo4r
+URL: https://github.com/pachadotdev/armadillo4r
+RoxygenNote: 7.3.3
+Encoding: UTF-8
+NeedsCompilation: yes
+VignetteBuilder: knitr
+LinkingTo: cpp4r, armadillo4r
+Config/testthat/edition: 3
