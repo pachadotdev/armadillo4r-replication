@@ -16,12 +16,17 @@ The full replication is in `presentation/replication.r` and the results are summ
 To run the replication code (and not just the presentation), you need to extract:
 
 1. These into into `presentation/suff_stats`
+
 https://github.com/pachadotdev/armadillo4r-replication/releases/download/v0.1/cmw26_suff_stats_part1.zip
+
 https://github.com/pachadotdev/armadillo4r-replication/releases/download/v0.1/cmw26_suff_stats_part2.zip
+
 https://github.com/pachadotdev/armadillo4r-replication/releases/download/v0.1/cmw26_suff_stats_part3.zip
+
 https://github.com/pachadotdev/armadillo4r-replication/releases/download/v0.1/cmw26_suff_stats_part4.zip
 
 2. These `presentation/var_inputs`
+
 https://github.com/pachadotdev/armadillo4r-replication/releases/download/v0.1/cmw26_var_inputs.zip
 
 and then run `presentation/replication.r` directly from the `presentation` directory.
