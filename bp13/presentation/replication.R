@@ -47,7 +47,7 @@ figure2
 figure3
 figure4
 
-fout <- sprintf("presentation/results-burns%d-draws%d.rds", n_burn, n_draws)
+fout <- sprintf("presentation/bp13-results-burns%d-draws%d.rds", n_burn, n_draws)
 
 results <- list(
     figure2 = figure2,

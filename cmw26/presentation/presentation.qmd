@@ -1,0 +1,415 @@
+---
+title: "Evaluating Monetary Policy Counterfactuals Caravello, McKay & Wolf (2026)"
+subtitle: "Replication using R and C++"
+author: "Mauricio Vargas Sepulveda"
+format: 
+  beamer:
+    theme: "Madrid"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    navigation: horizontal
+    section-titles: true
+    toc: false
+    aspectratio: 169
+    slide-level: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+# Background: Key Concepts
+
+## What is New Keynesian Economics?
+
+New Keynesian economics is a school of macroeconomic thought that:
+
+- Builds on Keynesian ideas (prices/wages don't adjust instantly)
+- Incorporates *micro-foundations*: derives aggregate behavior from individual optimization
+- Assumes *rational expectations*: agents use all available information to forecast
+- Features *nominal rigidities*: prices/wages are "sticky" (adjust slowly)
+
+Core insight: Monetary policy has *real effects* because prices don't adjust immediately
+
+---
+
+## Model Abbreviations Explained
+
+| Abbreviation | Full Name | Key Feature |
+|--------------|-----------|-------------|
+| RANK | Representative Agent New Keynesian | Single "average" household |
+| HANK | Heterogeneous Agent New Keynesian | Many different households (rich, poor, etc.) |
+| B-RANK | Behavioural RANK | Agents have bounded rationality |
+| B-HANK | Behavioural HANK | Heterogeneous + bounded rationality |
+
+---
+
+* Representative Agent: Assumes economy behaves "as if" there's one typical household
+* Heterogeneous Agents: Different households with different income, wealth, and constraints
+* Behavioural: Agents don't have perfect foresight; they use simpler forecasting rules
+
+---
+
+## Key Technical Terms
+
+IRF (Impulse Response Function): How a variable (e.g., inflation) responds over time to a one-time shock (e.g., interest rate change)
+
+Wold Representation/Response: A way to express any stationary time series as an infinite weighted sum of past "innovations" (unpredictable shocks) --- captures the *average* business cycle dynamics
+
+Policy Causal Effects ($\Theta^\nu$): The true effect of changing the policy rate on macroeconomic outcomes, isolated from other factors
+
+BVAR (Bayesian VAR): Vector Autoregression estimated with Bayesian methods (prior beliefs + data)
+
+DSGE: Dynamic Stochastic General Equilibrium model --- a fully specified structural model
+
+---
+
+## Why This Paper Matters
+
+Traditional approach to policy counterfactuals:
+
+1. Build a full structural DSGE model
+2. Change the policy rule
+3. Re-solve the entire model
+
+Problem: Results depend heavily on model assumptions we can't test
+
+This paper's insight:
+
+- Many counterfactuals only need *reduced-form evidence* (what we observe)
+- Structural models are only needed to *extrapolate* beyond observed policy variation
+- When extrapolation is needed, behavioural assumptions matter more than heterogeneity
+
+---
+
+# Main Findings
+
+## The Central Question
+
+How do we evaluate monetary policy counterfactuals?
+
+Counterfactual: "What would have happened if policy had been different?"
+
+- Traditional approach: Build micro-founded DSGE model, change policy, re-solve
+- Semi-structural approach: Directly leverage empirical evidence from historical policy variation
+
+This paper bridges both traditions:
+
+> Use as much reduced-form empirical evidence as possible, supplement with minimal structure necessary
+
+---
+
+## Historical Context: Saltwater vs Freshwater Economics
+
+| School | Universities | Core View |
+|--------|--------------|-----------|
+| Saltwater | MIT, Harvard, Berkeley, Princeton | Markets fail; policy intervention valuable |
+| Freshwater| Chicago, Minnesota, Rochester | Markets efficient; policy often harmful |
+
+Relevance to this paper:
+
+- *Freshwater* tradition: Rational expectations, micro-founded DSGE models, structural approach
+- *Saltwater* tradition: More open to reduced-form evidence, policy pragmatism
+
+---
+
+The debate:
+
+* Can we trust reduced-form evidence, or do we *need* structural models to understand policy effects?
+
+This paper's answer:
+
+* Both have a role
+* Use reduced-form evidence when possible (saltwater pragmatism), but structural models fill gaps where data is silent (freshwater discipline)
+
+---
+
+## Key Result: Sufficient Statistics
+
+To evaluate monetary policy counterfactuals, you only need two objects:
+
+1. Policy Causal Effects $\Theta^\nu$
+   - IRFs of all possible policy rate changes on macro outcomes
+   - Effects across the entire yield curve (short-end to long-end)
+   - *What happens to inflation/output when we change interest rates?*
+
+2. Reduced-Form Projections
+   - Wold impulse responses (the average business cycle)
+   - Forecasts (where the economy is heading without intervention)
+
+$\implies$ You do not need the full structural model, shock processes, or the policy rule itself!
+
+---
+
+## What Empirical Evidence Tells Us
+
+The constraint: Existing monetary policy shock literature primarily identifies effects of *transitory* rate changes (short end of yield curve)
+
+Note: "Short end" = immediate/near-term rate changes; "Long end" = persistent/future rate changes
+
+- Romer-Romer (2004): Short-lived policy rate changes
+- Aruoba-Drechsel (2024): Somewhat more persistent
+- Gertler-Karadi (2015), Miranda-Agrippino-Ricco (2023): Similar
+
+Missing piece: Causal effects of *delayed or persistent* rate changes (what happens when central banks commit to *future* rate paths)
+
+$\implies$ Need structural models to extrapolate beyond observed data variation
+
+---
+
+## The Extrapolation Question
+
+Four structural models for extrapolation:
+
+| Model  | Agents         | Expectations | Description |
+|--------|----------------|--------------|-------------|
+| RANK   | Representative | Rational     | Single "average" agent, perfect foresight |
+| HANK   | Heterogeneous  | Rational     | Many agents (rich/poor), perfect foresight |
+| B-RANK | Representative | Behavioural  | Single agent, bounded rationality |
+| B-HANK | Heterogeneous  | Behavioural  | Many agents, bounded rationality |
+
+Key finding: Once matched to short-end IRFs:
+
+- RANK vs HANK $\implies$ similar extrapolation
+- Behavioural frictions $\implies$ very different extrapolation
+
+---
+
+## Why HANK $\approx$ RANK (When Matched)
+
+Intuition:
+
+1. Market incompleteness can dampen or amplify monetary transmission
+2. But: matching to *identical short-end effects* means heterogeneity channels largely offset
+3. Result: "as-if" aggregation (echoes Werning, 2015)
+
+Plain language: When we force both models to match the same observed data (how economies respond to rate changes), the extra complexity of modeling different household types doesn't change the aggregate predictions much.
+
+Implication: For aggregate counterfactuals, whether we use RANK or HANK is largely immaterial
+
+What matters: Strength of behavioural frictions (how people form expectations about the future)
+
+# Methodology
+
+## Bayesian VAR Estimation
+
+VAR (Vector Autoregression): A statistical model where each variable depends on its own past values and past values of all other variables.
+
+Estimate reduced-form dynamics using BVAR with flat prior:
+
+$$Y_t = B_1 Y_{t-1} + \cdots + B_p Y_{t-p} + u_t$$
+
+Variables included:
+
+- Unemployment, Output, Investment, Consumption
+- Hours, TFP, Labor Productivity, Labor Share
+- Inflation, Federal Funds Rate
+
+Sample: 1960-1 to 2019-4, quarterly data
+
+---
+
+## Computing Wold IRFs
+
+Wold representation: $y_t = \sum_{\ell=0}^{\infty} \Psi_\ell u_{t-\ell}$
+
+Intuition: Any stationary series can be written as a weighted sum of past "surprises" ($u_t$). The weights ($\Psi_\ell$) tell us how past shocks propagate over time.
+
+Implementation:
+
+1. Decompose $\Sigma = LL'$ (Cholesky)
+2. Compute Wold coefficients recursively from companion form
+3. Apply rotation: $\text{IRF}_h = \Theta_h \cdot L$
+
+---
+
+I was able to use R and armadillo4r to recreate the same figures as the article.
+
+* $\implies$ advantage: free as in free of charge replication, open source and cross-platform independent validation
+* $\implies$ disadvantage: not free in time, Armadillo requires some C++ knowledge (not as user-friendly as MATLAB)
+
+See \url{https://github.com/pachadotdev/ecod024/tree/main/cmw26} for the replication code.
+
+---
+
+## Counterfactual Computation
+
+Question: "What would have happened under a different policy rule?"
+
+Given policy rule $A_\pi \pi + A_y y + A_i i = \omega$:
+
+*(Example: Taylor rule weights inflation and output gap)*
+
+Find optimal shock sequence:
+$$\nu^* = -\left(M'M\right)^{-1} M' \cdot \text{target}$$
+
+where $M = A_\pi \Pi_m + A_y Y_m + A_i I_m$
+
+Counterfactual outcomes:
+$$\tilde{\pi} = \pi + \Pi_m \nu^*, \quad \tilde{y} = y + Y_m \nu^*, \quad \tilde{i} = i + I_m \nu^*$$
+
+---
+
+## Optimal Policy Computation
+
+Dual mandate: Central banks (e.g., the Fed) aim to balance two goals:
+
+1. Price stability (low inflation: $\pi$)
+2. Maximum employment (output near potential: $y$)
+
+Loss function captures this trade-off:
+
+$$\mathcal{L} = \sum_{t=0}^T \beta^t \left[ \lambda_\pi \pi_t^2 + \lambda_y y_t^2 + \lambda_{\Delta i} (i_t - i_{t-1})^2 \right]$$
+
+*Third term: penalize rapid rate changes for policy stability*
+
+Solve for optimal policy path via quadratic programming:
+
+$$\min_\nu \frac{1}{2}\nu' H \nu + f'\nu$$
+
+# Replication
+
+## Computational Complexity
+
+| Function | Complexity | Description |
+|----------|------------|-------------|
+| `bvar_fn` | $O(D \cdot n^3)$ | $D$ posterior draws, $n^3$ for Wishart sampling |
+| `var_irf` | $O(H \cdot n^2 \cdot p)$ | $H$ horizons, $p$ lags, matrix products |
+| `cnfctl_fn` | $O(T^3)$ | Solves $(M'M)^{-1}M'$ with $T \times T$ matrices |
+| `optpol_fn` | $O(T^3)$ | QP solve via $H^{-1}g$ with $T \times T$ Hessian |
+| `freq_var_fn` | $O(n_\omega \cdot H \cdot n^2)$ | Spectral integration over frequency grid |
+
+---
+
+## Bottleneck: Counterfactual Loop
+
+The main computational burden is the counterfactual loop:
+
+$$\text{Total operations} \approx D \times M \times T^3$$
+
+where $D = 1000$ draws, $M = 4$ models, $T = 200$ horizons.
+
+For each draw $d$ and model $m$:
+
+1. Extract $\Pi_m^{(d)}, Y_m^{(d)}, I_m^{(d)}$ from sufficient statistics
+2. Solve $\nu^* = -(M'M)^{-1}M' \cdot \text{target}$ $\to$ $O(T^3)$
+3. Compute counterfactual paths $\to$ $O(T^2)$
+
+$\implies$ Historical evolution (Figure 7) runs this $\times 20$ forecast dates
+
+$\implies$ Replication time: ~1 hour on a standard laptop
+
+---
+
+## Results: Figures 3-5
+
+```{r figure-3, fig.width=10, fig.height=5}
+plot_list <- readRDS("./figure-3.rds")
+plot_list[[2]]
+```
+
+---
+
+```{r figure-3b, fig.width=10, fig.height=5}
+plot_list[[1]]
+```
+
+---
+
+```{r figure-4, fig.width=10, fig.height=5}
+readRDS("./figure-4.rds")
+```
+
+---
+
+```{r figure-5, fig.width=10, fig.height=5}
+readRDS("./figure-5.rds")
+```
+
+---
+
+## Table 5.1: Counterfactual Second Moments
+
+```{r table-5-1}
+knitr::kable(readRDS("./table-5-1.rds"))
+```
+
+---
+
+```{r figure-d1, fig.width=10, fig.height=5}
+readRDS("./figure-d1.rds")
+```
+
+## Figures 6-8
+
+```{r figure-6, fig.width=10, fig.height=4}
+readRDS("./figure-6.rds")
+```
+
+---
+
+```{r figure-7-1, fig.width=10, fig.height=5}
+f7 <- readRDS("./figure-7.rds")
+f7[[1]]
+```
+
+---
+
+```{r figure-7-2, fig.width=10, fig.height=5}
+f7[[2]]
+```
+
+---
+
+```{r figure-7-3, fig.width=10, fig.height=5}
+f7[[3]]
+```
+
+---
+
+```{r figure-8-1, fig.width=10, fig.height=4}
+f8 <- readRDS("./figure-8.rds")
+f8[[1]]
+```
+
+---
+
+```{r figure-8-2, fig.width=10, fig.height=4}
+f8[[2]]
+```
+
+---
+
+```{r figure-8-3, fig.width=10, fig.height=4}
+f8[[3]]
+```
+
+# Key Takeaways
+
+## Summary of Findings
+
+1. Semi-structural approach often suffices $\implies$ When counterfactual is about near-term policy, model extrapolation adds little
+2. RANK $\approx$ HANK for aggregates $\implies$ Once matched to short-end IRFs, household heterogeneity doesn't matter much for aggregate outcomes
+3. Behavioural frictions are crucial
+   - $\implies$ *Forward guidance* effectiveness depends critically on expectation formation
+   - $\implies$ B-RANK/B-HANK predict much weaker effects of anticipated policy
+   - (Forward guidance = central bank announcing future policy intentions)
+4. Great Recession: Dual mandate central bank would have preferred deeply negative rate
+5. Post-COVID: Standard models suggest forward guidance could stabilize inflation; behavioural models disagree
+
+---
+
+## Implications for Policy Analysis
+
+Practical guidance for counterfactual evaluation:
+
+- Check if contemplated policy changes are mainly about *near-term* rates
+  - If yes $\implies$ semi-structural approach likely sufficient
+  - If no $\implies$ need structural model for extrapolation
+
+- For extrapolation, focus on:
+  - Matching short-end policy effects (discipline the model)
+  - Behavioural assumptions about expectations (key for long-end effects)
+  - *Not* on RANK vs HANK distinction
